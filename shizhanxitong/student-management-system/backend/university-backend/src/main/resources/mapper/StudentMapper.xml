@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.university_backend.mapper.StudentMapper">
+    <select id="findAll" resultType="com.example.university_backend.entity.Student">
+        SELECT 
+            id, 
+            student_no AS studentNo, 
+            name, 
+            gender, 
+            birth_date AS birthDate, 
+            id_card AS idCard, 
+            phone, 
+            email, 
+            address, 
+            class_id AS classId, 
+            enrollment_date AS enrollmentDate, 
+            graduation_date AS graduationDate, 
+            student_type AS studentType, 
+            enrollment_type AS enrollmentType, 
+            status, 
+            total_credits AS totalCredits, 
+            gpa,
+            create_time AS createTime,
+            update_time AS updateTime
+        FROM student
+    </select>
+    
+    <select id="findById" resultType="com.example.university_backend.entity.Student">
+        SELECT 
+            id, 
+            student_no AS studentNo, 
+            name, 
+            gender, 
+            birth_date AS birthDate, 
+            id_card AS idCard, 
+            phone, 
+            email, 
+            address, 
+            class_id AS classId, 
+            enrollment_date AS enrollmentDate, 
+            graduation_date AS graduationDate, 
+            student_type AS studentType, 
+            enrollment_type AS enrollmentType, 
+            status, 
+            total_credits AS totalCredits, 
+            gpa,
+            create_time AS createTime,
+            update_time AS updateTime
+        FROM student 
+        WHERE id = #{id}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.university_backend.entity.Student" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student (
+            student_no, 
+            name, 
+            gender, 
+            birth_date, 
+            id_card, 
+            phone, 
+            email, 
+            address, 
+            class_id, 
+            enrollment_date, 
+            graduation_date, 
+            student_type, 
+            enrollment_type, 
+            status, 
+            total_credits, 
+            gpa,
+            create_time,
+            update_time
+        ) VALUES (
+            #{studentNo}, 
+            #{name}, 
+            #{gender}, 
+            #{birthDate}, 
+            #{idCard}, 
+            #{phone}, 
+            #{email}, 
+            #{address}, 
+            #{classId}, 
+            #{enrollmentDate}, 
+            #{graduationDate}, 
+            #{studentType}, 
+            #{enrollmentType}, 
+            #{status}, 
+            #{totalCredits}, 
+            #{gpa},
+            NOW(),
+            NOW()
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.example.university_backend.entity.Student">
+        UPDATE student 
+        SET 
+            student_no = #{studentNo}, 
+            name = #{name}, 
+            gender = #{gender}, 
+            birth_date = #{birthDate}, 
+            id_card = #{idCard}, 
+            phone = #{phone}, 
+            email = #{email}, 
+            address = #{address}, 
+            class_id = #{classId}, 
+            enrollment_date = #{enrollmentDate}, 
+            graduation_date = #{graduationDate}, 
+            student_type = #{studentType}, 
+            enrollment_type = #{enrollmentType}, 
+            status = #{status}, 
+            total_credits = #{totalCredits}, 
+            gpa = #{gpa},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM student WHERE id = #{id}
+    </delete>
+    
+    <select id="queryStudents" resultType="com.example.university_backend.entity.Student">
+        SELECT 
+            id, 
+            student_no AS studentNo, 
+            name, 
+            gender, 
+            birth_date AS birthDate, 
+            id_card AS idCard, 
+            phone, 
+            email, 
+            address, 
+            class_id AS classId, 
+            enrollment_date AS enrollmentDate, 
+            graduation_date AS graduationDate, 
+            student_type AS studentType, 
+            enrollment_type AS enrollmentType, 
+            status, 
+            total_credits AS totalCredits, 
+            gpa,
+            create_time AS createTime,
+            update_time AS updateTime
+        FROM student
+        <where>
+            <if test="studentNo != null and studentNo != ''">
+                AND student_no LIKE CONCAT('%', #{studentNo}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

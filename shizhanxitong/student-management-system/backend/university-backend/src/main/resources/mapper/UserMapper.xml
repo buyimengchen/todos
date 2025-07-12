@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.university_backend.mapper.UserMapper">
+    <resultMap id="userResultMap" type="com.example.university_backend.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="realName" column="real_name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="role" column="role"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="userResultMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="findAll" resultMap="userResultMap">
+        SELECT * FROM user
+    </select>
+
+    <select id="findById" resultMap="userResultMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.university_backend.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, real_name, email, phone, role, status, create_time, update_time)
+        VALUES (#{username}, #{password}, #{realName}, #{email}, #{phone}, #{role}, #{status}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.example.university_backend.entity.User">
+        UPDATE user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="status != null">status = #{status},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE user SET status = #{status}, update_time = NOW() WHERE id = #{id}
+    </update>
+</mapper>
